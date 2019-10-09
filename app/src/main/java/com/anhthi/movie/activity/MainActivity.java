@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         rccMovie.setAdapter(movieAdapter);
 
         database = new Database(MainActivity.this, "movie.sqlite", null, 1);
+
         // create database
         database.QueryData("CREATE TABLE IF NOT EXISTS Movie(id_like INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER)");
 
