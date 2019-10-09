@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.RegiterActivity"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    tools:ignore="HardcodedText,UselessParent,UnusedAttribute,Autofill,ContentDescription,SmallSp,NestedWeights">
 
     <TextView
         android:id="@+id/textView"
@@ -37,7 +38,6 @@
 
             <EditText
                 android:backgroundTint="#66FFFFFF"
-                android:backgroundTintMode="add"
                 android:id="@+id/editTextFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

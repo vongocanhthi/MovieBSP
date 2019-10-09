@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.RegiterActivity"
+    android:background="@drawable/bg"
+    tools:ignore="HardcodedText,UselessParent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Đăng ký"
+        android:gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:textColor="#ffffff"
+        android:textSize="21sp"
+        app:fontFamily="@font/uvnbaisau" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#1AFFFFFF"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:backgroundTint="#66FFFFFF"
+                android:id="@+id/editTextFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Họ và tên"
+                android:inputType="textPersonName"
+                android:textColor="#ffffff"
+                android:textColorHint="#B3FFFFFF" />
+
+            <EditText
+                android:backgroundTint="#66FFFFFF"
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="#ffffff"
+                android:textColorHint="#B3FFFFFF" />
+
+            <EditText
+                android:backgroundTint="#66FFFFFF"
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#B3FFFFFF" />
+
+            <EditText
+                android:backgroundTint="#66FFFFFF"
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Xác nhận mật khẩu"
+                android:inputType="textPassword"
+                android:textColor="#ffffff"
+                android:textColorHint="#B3FFFFFF" />
+
+            <Button
+                android:id="@+id/buttonRegiter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FF5722"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Đăng ký"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/btnclose" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Bằng việc chọn vào nút Đăng ký với\nĐiều khoản sử dụng và Quy định bảo mật của HFilm"
+            android:gravity="center|bottom"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:fontFamily="@font/opensans_light" />
+
+    </LinearLayout>
+
+</LinearLayout>

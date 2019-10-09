@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="RtlSymmetry,HardcodedText,UnusedAttribute,RtlHardcoded,ContentDescription,UseCompoundDrawables">
 
     <TextView
         android:id="@+id/txtTitle"
@@ -16,7 +17,7 @@
         android:gravity="center"
         android:text="textview"
         android:textColor="#ffffff"
-        android:textSize="21dp"
+        android:textSize="21sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -209,7 +210,8 @@
         android:backgroundTint="#fea46f"
         android:text="Xem thêm"
         android:textColor="#fea46f"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:layout_marginEnd="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

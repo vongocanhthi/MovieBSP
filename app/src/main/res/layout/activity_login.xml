@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:weightSum="3"
     android:background="@drawable/bg"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.LoginActivity"
+    tools:ignore="HardcodedText,UnusedAttribute,UselessParent,Autofill">
 
     <TextView
         android:gravity="center|bottom"
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:textColor="#ffffff"
@@ -53,14 +54,14 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Mật khẩu"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
         <Button
             android:layout_marginTop="10dp"
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FF5722"
+            android:background="@drawable/custom_button"
             android:text="Đăng nhập"
             android:textAllCaps="false"
             android:textColor="#ffffff"
@@ -106,7 +107,8 @@
             android:fontFamily="@font/opensans_regular"
             android:text="ĐĂNG KÝ"
             android:textColor="#FF5722"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -100,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //chuyen sang trang Dang nhap
+    public void pageLogin(){
+        Toast.makeText(this, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     //call API
     private void callDataAPI() {
         Call<MovieResponse> call = service.getMovieData();

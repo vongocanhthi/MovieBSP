@@ -1,6 +1,5 @@
 package com.anhthi.movie.adapter;
 
-import android.database.Cursor;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.item_film, null);
+        View view = inflater.inflate(R.layout.row_item_film, null);
         return new ViewHolder(view);
     }
 
@@ -80,7 +79,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.btnWatchMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getDataFromItemFilm(id, holder.txtLike.getText().toString());
+                //activity.getDataFromItemFilm(id, holder.txtLike.getText().toString());
+                activity.pageLogin();
             }
         });
 

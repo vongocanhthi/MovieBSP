@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    tools:ignore="SpUsage,UnusedAttribute,HardcodedText">
 
     <TextView
         android:background="#fd6003"
@@ -17,7 +17,8 @@
         android:gravity="center"
         android:textSize="21dp"
         android:fontFamily="@font/uvnbaisau"
-        android:text="HFILM" />
+        android:text="HFILM"
+         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rccMovie"

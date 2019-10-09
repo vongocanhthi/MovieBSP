@@ -16,7 +16,7 @@ public class RegiterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regiter);
+        setContentView(R.layout.activity_register);
 
         adControl();
         addEvent();
