@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,8 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.btnWatchMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //activity.getDataFromItemFilm(id, holder.txtLike.getText().toString());
-                activity.pageLogin();
+                activity.getDataFromItemFilm(id, holder.txtLike.getText().toString());
             }
         });
 

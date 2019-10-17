@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.RegiterActivity"
+    tools:context=".activity.RegisterActivity"
     android:background="@drawable/bg"
     tools:ignore="HardcodedText,UselessParent,UnusedAttribute,Autofill,ContentDescription,SmallSp,NestedWeights">
 
@@ -84,7 +84,7 @@
                 android:id="@+id/buttonRegiter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FF5722"
+                android:background="@drawable/custom_button"
                 android:fontFamily="@font/opensans_regular"
                 android:text="Đăng ký"
                 android:textColor="#ffffff"
@@ -106,7 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/btnclose" />
+            app:srcCompat="@drawable/btnclose"
+            android:onClick="Back"/>
 
         <TextView
             android:layout_weight="1"

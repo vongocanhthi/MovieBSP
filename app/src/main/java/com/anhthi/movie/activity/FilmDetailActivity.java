@@ -43,8 +43,16 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_film_detail);
 
         init();
-        dataIntent();
+        intentPageLogin();
+        callFilmDetailData();
         addEventLike();
+
+    }
+
+    private void intentPageLogin() {
+        Intent intent = new Intent(FilmDetailActivity.this, LoginActivity.class);
+        startActivity(intent);
+        //Toast.makeText(activity, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -76,7 +84,10 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         });
     }
 
-    private void dataIntent() {
+    private void callFilmDetailData() {
+        Bundle bundle = getIntent().getExtras();
+        id = (int) bundle.get("id");
+        like = (String) bundle.get("like");
         txtLike.setText(like);
 
         Call<MovieResponse> call = MainActivity.service.getMovieData();
@@ -176,15 +187,12 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         imgImage = findViewById(R.id.imgImage);
         imgLike = findViewById(R.id.imgLike);
 
-        Bundle bundle = getIntent().getExtras();
-        id = (int) bundle.get("id");
-        like = (String) bundle.get("like");
-
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(FilmDetailActivity.this, MainActivity.class);
         startActivity(intent);
+        FilmDetailActivity.this.finish();
     }
 }

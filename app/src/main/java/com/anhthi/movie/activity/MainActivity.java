@@ -5,8 +5,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import com.anhthi.movie.database.Database;
 import com.anhthi.movie.model.Movie;
 import com.anhthi.movie.model.MovieResponse;
 import com.anhthi.movie.network.ApiService;
+import com.anhthi.movie.network.InternetConnection;
 import com.anhthi.movie.network.RetrofitClientInstance;
 
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    SwipeRefreshLayout srlMovie;
     RecyclerView rccMovie;
     static ArrayList<Movie> movieArrayList;
     MovieAdapter movieAdapter;
@@ -43,17 +48,39 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         callDataAPI();
+        refresh();
+        InternetConnection internetConnection = new InternetConnection();
+        if(internetConnection.checkConnection(MainActivity.this)){
+            Toast.makeText(this, "Connecting by Wifi", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Connecting by Mobile Network", Toast.LENGTH_SHORT).show();
+        }
 
+    }
+
+    private void refresh() {
+        srlMovie.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                movieArrayList.clear();
+                movieAdapter.notifyDataSetChanged();
+                callDataAPI();
+                srlMovie.setRefreshing(false);
+            }
+        });
     }
 
     // Init
     private void init() {
+        srlMovie = findViewById(R.id.srlMovie);
         rccMovie = findViewById(R.id.rccMovie);
         rccMovie.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+        // divider
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(MainActivity.this, R.drawable.custom_divider);
         dividerItemDecoration.setDrawable(drawable);
         rccMovie.addItemDecoration(dividerItemDecoration);
+
         movieArrayList = new ArrayList<>();
         movieAdapter = new MovieAdapter(MainActivity.this, movieArrayList);
         rccMovie.setAdapter(movieAdapter);
@@ -73,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
             int id_movie = cursor.getInt(1);
             if(id == id_movie){
                 like.setText("Đã thích");
+            }else {
+                like.setText("Thích");
             }
         }
     }
@@ -94,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Get data intent
     public void getDataFromItemFilm(int id, String like) {
+        // neu chua dang nhap thi chuyen sang page login
+        Toast.makeText(this, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, FilmDetailActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("like",like);
@@ -105,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+        MainActivity.this.finish();
     }
 
     //call API
@@ -114,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 movieArrayList.addAll(response.body().getData());
-
                 movieAdapter.notifyDataSetChanged();
             }
             @Override
