@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
@@ -10,26 +10,37 @@
     tools:ignore="SpUsage,UnusedAttribute,HardcodedText">
 
     <TextView
+        android:id="@+id/txtTitle"
         android:background="#fd6003"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:textColor="#ffffff"
         android:gravity="center"
         android:textSize="21dp"
         android:fontFamily="@font/uvnbaisau"
-        android:text="HFILM"
-         />
+        android:text="HFILM" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlMovie"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtTitle">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rccMovie"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    <include
+        android:id="@+id/rlloadMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/item_load_more"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

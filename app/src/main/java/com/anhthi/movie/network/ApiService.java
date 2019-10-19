@@ -18,6 +18,12 @@ public interface ApiService {
     @GET("movie/list")
     Call<MovieResponse> getMovieData();
 
+    // danh sách movie scroll
+    @Headers(APP_TOKEN)
+    @FormUrlEncoded
+    @POST("movie/list")
+    Call<MovieResponse> getMovieDataScroll(@Field("per_page") Integer per_page);
+
     // Đăng nhập
     @Headers(APP_TOKEN)
     @FormUrlEncoded

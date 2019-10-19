@@ -1,5 +1,6 @@
 package com.anhthi.movie.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,6 +14,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +36,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    RelativeLayout rlloadMore;
     SwipeRefreshLayout srlMovie;
     RecyclerView rccMovie;
     static ArrayList<Movie> movieArrayList;
     MovieAdapter movieAdapter;
     public static Database database;
+    boolean isLoading = false;
+    int perpage = 10;
+
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     static ApiService service = RetrofitClientInstance.getRetrofitClientInstance().create(ApiService.class);
 
@@ -47,31 +56,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        callDataAPI();
-        refresh();
+        callDataAPIScroll();
+        //callDataAPI();
+        //refresh();
+        checkInternet();
+        loadMore();
+
+    }
+
+    private void checkInternet() {
         InternetConnection internetConnection = new InternetConnection();
         if(internetConnection.checkConnection(MainActivity.this)){
             Toast.makeText(this, "Connecting by Wifi", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Connecting by Mobile Network", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void refresh() {
-        srlMovie.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                movieArrayList.clear();
-                movieAdapter.notifyDataSetChanged();
-                callDataAPI();
-                srlMovie.setRefreshing(false);
-            }
-        });
+//        srlMovie.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                movieArrayList.clear();
+//                movieAdapter.notifyDataSetChanged();
+//                //callDataAPI();
+//                callDataAPIScroll();
+//                srlMovie.setRefreshing(false);
+//            }
+//        });
     }
 
     // Init
     private void init() {
+        rlloadMore = findViewById(R.id.rlloadMore);
         srlMovie = findViewById(R.id.srlMovie);
         rccMovie = findViewById(R.id.rccMovie);
         rccMovie.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -151,6 +168,62 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //call API Scroll
+    private void callDataAPIScroll() {
+        Call<MovieResponse> call = service.getMovieDataScroll(perpage);
+        call.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                movieArrayList.addAll(response.body().getData());
+                movieAdapter.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, ""+ movieArrayList.size(), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // load more
+    private void loadMore(){
+        rccMovie.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                visibleItemCount = linearLayoutManager.getChildCount();
+                totalItemCount = linearLayoutManager.getItemCount();
+                pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if((visibleItemCount + pastVisiblesItems) == totalItemCount && isLoading == false){
+                    rlloadMore.setVisibility(View.VISIBLE);
+                    perpage += 10;
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieArrayList.clear();
+                            callDataAPIScroll();
+                            movieAdapter.notifyDataSetChanged();
+                            rlloadMore.setVisibility(View.GONE);
+                            isLoading = false;
+                        }
+                    }, 2000);
+
+                    isLoading = true;
+                }
             }
         });
     }
