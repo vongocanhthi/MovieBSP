@@ -16,7 +16,10 @@ public class InternetConnection {
                 if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     // connected to wifi
                     return true;
-                } else return activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+                } else {
+                    //return activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+                    return false;
+                }
             }
         }
         return false;

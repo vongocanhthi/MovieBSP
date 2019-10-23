@@ -22,7 +22,7 @@ public interface ApiService {
     @Headers(APP_TOKEN)
     @FormUrlEncoded
     @POST("movie/list")
-    Call<MovieResponse> getMovieDataScroll(@Field("per_page") Integer per_page);
+    Call<MovieResponse> getMovieDataScroll(@Field("page") Integer page);
 
     // Đăng nhập
     @Headers(APP_TOKEN)

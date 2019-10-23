@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
     YouTubePlayerView ytbTrailer;
     TextView txtTitle, txtName, txtViews, txtGenres, txtActor, txtDirector, txtManufacturer, txtDuration, txtLike, txtDescription, txtSeeMore;
     ImageView imgImage, imgLike;
+    LinearLayout llLike;
     Movie movie;
     String API_KEY = "AIzaSyBwdvS86j8bvmqLYZ9xDY8Kzjten1lU6qw";
     int id;
@@ -52,8 +54,6 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
     private void intentPageLogin() {
         Intent intent = new Intent(FilmDetailActivity.this, LoginActivity.class);
         startActivity(intent);
-        //Toast.makeText(activity, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
-
     }
 
     private void addEventLike() {
@@ -62,11 +62,11 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
             txtLike.setTextColor(Color.parseColor("#ffffff"));
         }else{
             imgLike.setImageResource(R.drawable.ic_like_orange);
-            txtLike.setText("Đã thích");
+            //txtLike.setText("Đã thích");
             txtLike.setTextColor(Color.parseColor("#fd6003"));
         }
 
-        imgLike.setOnClickListener(new View.OnClickListener() {
+        llLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(txtLike.getText().equals("Thích")){
@@ -186,6 +186,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         txtSeeMore = findViewById(R.id.txtSeeMore);
         imgImage = findViewById(R.id.imgImage);
         imgLike = findViewById(R.id.imgLike);
+        llLike = findViewById(R.id.llLike);
 
     }
     @Override

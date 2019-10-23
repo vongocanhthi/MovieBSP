@@ -1,6 +1,7 @@
 package com.anhthi.movie.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     MovieAdapter movieAdapter;
     public static Database database;
     boolean isLoading = false;
-    int perpage = 10;
+    int page = 1;
+    boolean isEmptyData = false;
 
     int pastVisiblesItems, visibleItemCount, totalItemCount;
 
@@ -56,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        callDataAPIScroll();
-        //callDataAPI();
-        //refresh();
         checkInternet();
+        callDataAPI();
+        refresh();
         loadMore();
 
     }
@@ -74,16 +76,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-//        srlMovie.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                movieArrayList.clear();
-//                movieAdapter.notifyDataSetChanged();
-//                //callDataAPI();
-//                callDataAPIScroll();
-//                srlMovie.setRefreshing(false);
-//            }
-//        });
+        srlMovie.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                movieArrayList.clear();
+                callDataAPI();
+                page = 1;
+                isEmptyData = false;
+                movieAdapter.notifyDataSetChanged();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        srlMovie.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
     }
 
     // Init
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             int id_movie = cursor.getInt(1);
             if(id == id_movie){
                 like.setText("Đã thích");
+                break;
             }else {
                 like.setText("Thích");
             }
@@ -146,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("id", id);
         intent.putExtra("like",like);
         startActivity(intent);
+        MainActivity.this.finish();
     }
 
     //chuyen sang trang Dang nhap
@@ -174,13 +185,19 @@ public class MainActivity extends AppCompatActivity {
 
     //call API Scroll
     private void callDataAPIScroll() {
-        Call<MovieResponse> call = service.getMovieDataScroll(perpage);
+        Call<MovieResponse> call = service.getMovieDataScroll(page);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                movieArrayList.addAll(response.body().getData());
-                movieAdapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, ""+ movieArrayList.size(), Toast.LENGTH_SHORT).show();
+                if(movieArrayList.size() == response.body().getPaging().getTotalItem()){
+                    Toast.makeText(MainActivity.this, "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
+                    isEmptyData = true;
+                }else{
+                    isEmptyData = false;
+                    movieArrayList.addAll(response.body().getData());
+                    movieAdapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, ""+ movieArrayList.size(), Toast.LENGTH_SHORT).show();
+                }
             }
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
@@ -207,25 +224,31 @@ public class MainActivity extends AppCompatActivity {
                 pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
                 if((visibleItemCount + pastVisiblesItems) == totalItemCount && isLoading == false){
-                    rlloadMore.setVisibility(View.VISIBLE);
-                    perpage += 10;
+                    if(!isEmptyData){
+                        rlloadMore.setVisibility(View.VISIBLE);
+                        page += 1;
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            movieArrayList.clear();
-                            callDataAPIScroll();
-                            movieAdapter.notifyDataSetChanged();
-                            rlloadMore.setVisibility(View.GONE);
-                            isLoading = false;
-                        }
-                    }, 2000);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                callDataAPIScroll();
+                                movieAdapter.notifyDataSetChanged();
+                                rlloadMore.setVisibility(View.GONE);
+                                isLoading = false;
+                            }
+                        }, 2000);
 
-                    isLoading = true;
+                        isLoading = true;
+                    }
                 }
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

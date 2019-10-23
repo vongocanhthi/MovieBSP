@@ -95,8 +95,18 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void Back(View view) {
+        intentLogin();
+    }
+
+    private void intentLogin() {
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
         RegisterActivity.this.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        intentLogin();
     }
 }

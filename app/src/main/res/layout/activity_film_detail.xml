@@ -1,239 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    android:orientation="vertical"
-    tools:ignore="RtlSymmetry,HardcodedText,UnusedAttribute,RtlHardcoded,ContentDescription,UseCompoundDrawables">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/txtTitle"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#fd6003"
-        android:fontFamily="@font/opensans_bold"
-        android:gravity="center"
-        android:text="textview"
-        android:textColor="#ffffff"
-        android:textSize="21sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical"
+        tools:ignore="RtlSymmetry,HardcodedText,UnusedAttribute,RtlHardcoded,ContentDescription,UseCompoundDrawables">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2.5">
-
-        <ImageView
-            android:id="@+id/imgImage"
-            android:layout_width="50pt"
-            android:layout_height="80pt"
-            android:layout_weight="1"
-            android:padding="10dp"
-            app:srcCompat="@drawable/btnclose" />
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fd6003"
+            android:fontFamily="@font/opensans_bold"
+            android:gravity="center"
+            android:text="textview"
+            android:textColor="#ffffff"
+            android:textSize="21sp"
+            android:textStyle="bold" />
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2.5">
+
+            <ImageView
+                android:id="@+id/imgImage"
+                android:layout_width="50pt"
+                android:layout_height="80pt"
+                android:layout_weight="1"
+                android:padding="10dp"
+                app:srcCompat="@drawable/btnclose" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:text="TextView"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtViews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="TextView"
+                    android:textColor="#fea46f" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Genres: "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtGenres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="#CCFFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Actor: "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtActor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="#CCFFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Director: "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtDirector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="#CCFFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manufacturer: "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtManufacturer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="#CCFFFFFF" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời lượng phim: "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="#CCFFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/imgLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_like" />
+
+                    <TextView
+                        android:id="@+id/txtLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Thích"
+                        android:textColor="#CCFFFFFF" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textColor="#CCFFFFFF" />
+
+        <TextView
+            android:id="@+id/txtSeeMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#fea46f"
+            android:text="Xem thêm"
+            android:textColor="#fea46f"
+            android:textStyle="italic"
+            android:layout_marginEnd="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp">
+            android:padding="10dp">
 
             <TextView
-                android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_bold"
-                android:text="TextView"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                android:text="XEM TRAILER"
+                android:textColor="#FF5722" />
 
-            <TextView
-                android:id="@+id/txtViews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="TextView"
-                android:textColor="#fea46f" />
-
-            <LinearLayout
+            <com.google.android.youtube.player.YouTubePlayerView
+                android:id="@+id/ytbTrailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Genres: "
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtGenres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="#CCFFFFFF" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Actor: "
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtActor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="#CCFFFFFF" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Director: "
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtDirector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="#CCFFFFFF" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Manufacturer: "
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtManufacturer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="#CCFFFFFF" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thời lượng phim: "
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtDuration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="#CCFFFFFF" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <ImageView
-                    android:id="@+id/imgLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_like" />
-
-                <TextView
-                    android:id="@+id/txtLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Thích"
-                    android:textColor="#CCFFFFFF" />
-
-
-            </LinearLayout>
+                android:layout_marginTop="5dp" />
 
         </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:padding="10dp"
-        android:text="TextView"
-        android:textColor="#CCFFFFFF" />
-
-    <TextView
-        android:id="@+id/txtSeeMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:backgroundTint="#fea46f"
-        android:text="Xem thêm"
-        android:textColor="#fea46f"
-        android:textStyle="italic"
-        android:layout_marginEnd="10dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_bold"
-            android:text="XEM TRAILER"
-            android:textColor="#FF5722" />
-
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/ytbTrailer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
-
-    </LinearLayout>
 
 
-</LinearLayout>
+    </LinearLayout>0
+</ScrollView>

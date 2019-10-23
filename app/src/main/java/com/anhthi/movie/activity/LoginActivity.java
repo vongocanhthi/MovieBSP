@@ -24,6 +24,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     EditText edtEmail, edtPassword;
     Button btnLogin, btnForgotPassword, btnFacebook;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,29 +52,29 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không được để trống !!!", Toast.LENGTH_SHORT).show();
                 } else {
-                    callLoginData(email, password);
+                    Call<UserResponse> call = MainActivity.service.getLoginData(email, password);
+                    call.enqueue(new Callback<UserResponse>() {
+                        @Override
+                        public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                            if (response.body().getMessage().equals("Email cannot found") || response.body().getMessage().equals("Wrong password")) {
+                                Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không chính xác !!!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("email", email);
+                                editor.putString("password", password);
+                                editor.commit();
+                                LoginActivity.this.finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserResponse> call, Throwable t) {
+                            Toast.makeText(LoginActivity.this, "Lỗi đăng nhâp", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                 }
-            }
-        });
-    }
-
-    private void callLoginData(String email, String password) {
-        Call<UserResponse> call = MainActivity.service.getLoginData(email, password);
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if (response.body().getMessage().equals("Email cannot found") || response.body().getMessage().equals("Wrong password")) {
-                    Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không chính xác !!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    LoginActivity.this.finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Lỗi đăng nhâp", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -84,11 +85,16 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnForgotPassword = findViewById(R.id.btnForgotPassword);
         btnFacebook = findViewById(R.id.btnFacebook);
+
+        sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
+        edtEmail.setText(sharedPreferences.getString("email", ""));
+        edtPassword.setText(sharedPreferences.getString("password", ""));
     }
 
     public void redirectRegister(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
+        LoginActivity.this.finish();
     }
 
     @Override

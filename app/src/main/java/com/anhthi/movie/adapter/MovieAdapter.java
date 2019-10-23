@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,7 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             holder.txtLike.setTextColor(Color.parseColor("#fd6003"));
         }
 
-        holder.imgLike.setOnClickListener(new View.OnClickListener() {
+        holder.llLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(holder.txtLike.getText().equals("Thích")){
@@ -94,6 +95,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ImageView imgImage, imgLike;
         TextView txtTitle, txtViews, txtDescription, txtName, txtLike;
         Button btnWatchMovie;
+        LinearLayout llLike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +107,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             txtDescription = itemView.findViewById(R.id.txtDescription);
             txtLike = itemView.findViewById(R.id.txtLike);
             btnWatchMovie = itemView.findViewById(R.id.btnWatchMovie);
+            llLike = itemView.findViewById(R.id.llLike);
         }
     }
 }
