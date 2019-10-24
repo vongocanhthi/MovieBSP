@@ -9,18 +9,6 @@
     tools:context=".activity.MainActivity"
     tools:ignore="SpUsage,UnusedAttribute,HardcodedText">
 
-    <TextView
-        android:id="@+id/txtTitle"
-        android:background="#fd6003"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:textSize="21dp"
-        android:fontFamily="@font/uvnbaisau"
-        android:text="HFILM" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlMovie"
         android:layout_width="match_parent"

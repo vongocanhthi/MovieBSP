@@ -2,6 +2,7 @@ package com.anhthi.movie.activity;
 
 import androidx.annotation.RequiresApi;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,6 +21,8 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,13 +48,12 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_film_detail);
 
         init();
-        intentPageLogin();
         callFilmDetailData();
         addEventLike();
 
     }
 
-    private void intentPageLogin() {
+    private void intentLogin() {
         Intent intent = new Intent(FilmDetailActivity.this, LoginActivity.class);
         startActivity(intent);
     }
@@ -67,6 +69,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         }
 
         llLike.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if(txtLike.getText().equals("Thích")){
@@ -86,15 +89,17 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
 
     private void callFilmDetailData() {
         Bundle bundle = getIntent().getExtras();
-        id = (int) bundle.get("id");
-        like = (String) bundle.get("like");
+        id = bundle.getInt("id");
+        like = bundle.getString("like");
         txtLike.setText(like);
 
         Call<MovieResponse> call = MainActivity.service.getMovieData();
         call.enqueue(new Callback<MovieResponse>() {
+            @SuppressLint("SetTextI18n")
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(@NotNull Call<MovieResponse> call, Response<MovieResponse> response) {
+                assert response.body() != null;
                 MainActivity.movieArrayList.addAll(response.body().getData());
 
                 movie = MainActivity.movieArrayList.get(id - 1);
@@ -133,7 +138,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(FilmDetailActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
             }
         });
@@ -153,6 +158,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void checkMaxLineDescription() {
         if(txtSeeMore.getText().equals("Xem thêm")){
             txtDescription.setMaxLines(Integer.MAX_VALUE);

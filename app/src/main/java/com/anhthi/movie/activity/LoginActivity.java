@@ -11,11 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.anhthi.movie.R;
-import com.anhthi.movie.model.User;
 import com.anhthi.movie.model.UserResponse;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,12 +20,13 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     EditText edtEmail, edtPassword;
     Button btnLogin, btnForgotPassword, btnFacebook;
-    SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         addInit();
         addEvent();
@@ -65,6 +62,12 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("password", password);
                                 editor.commit();
                                 LoginActivity.this.finish();
+
+                                MainActivity.isLogin = true;
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                LoginActivity.this.finish();
+
                             }
                         }
 
@@ -100,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        MainActivity.isCheckInternet = true;
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         LoginActivity.this.finish();

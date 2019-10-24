@@ -2,6 +2,7 @@ package com.anhthi.movie.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,14 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +35,8 @@ import com.anhthi.movie.network.ApiService;
 import com.anhthi.movie.network.InternetConnection;
 import com.anhthi.movie.network.RetrofitClientInstance;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -44,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<Movie> movieArrayList;
     MovieAdapter movieAdapter;
     public static Database database;
-    boolean isLoading = false;
     int page = 1;
-    boolean isEmptyData = false;
+    boolean isEmptyData = false, isLoading = false;
+    static boolean isLogin = false, isCheckInternet = false;
 
     int pastVisiblesItems, visibleItemCount, totalItemCount;
 
@@ -55,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
+        customActionBar();
         init();
         checkInternet();
         callDataAPI();
@@ -66,13 +72,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void customActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER);
+
+        assert actionBar != null;
+        actionBar.setCustomView(view, layoutParams);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+    }
+
     private void checkInternet() {
-        InternetConnection internetConnection = new InternetConnection();
-        if(internetConnection.checkConnection(MainActivity.this)){
-            Toast.makeText(this, "Connecting by Wifi", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Connecting by Mobile Network", Toast.LENGTH_SHORT).show();
+        if(!isCheckInternet){
+            InternetConnection internetConnection = new InternetConnection();
+            if(internetConnection.checkConnection(MainActivity.this)){
+                Toast.makeText(this, "Connecting by Wifi", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Connecting by Mobile Network", Toast.LENGTH_SHORT).show();
+            }
+            isCheckInternet = true;
         }
+
     }
 
     private void refresh() {
@@ -104,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         // divider
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(MainActivity.this, R.drawable.custom_divider);
+        assert drawable != null;
         dividerItemDecoration.setDrawable(drawable);
         rccMovie.addItemDecoration(dividerItemDecoration);
 
@@ -119,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //select SQLite
+    @SuppressLint("SetTextI18n")
     public void selectLike(int id, TextView like) {
         Cursor cursor = MainActivity.database.getData("SELECT * FROM Movie");
         while (cursor.moveToNext()){
@@ -151,16 +178,22 @@ public class MainActivity extends AppCompatActivity {
     // Get data intent
     public void getDataFromItemFilm(int id, String like) {
         // neu chua dang nhap thi chuyen sang page login
-        Toast.makeText(this, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, FilmDetailActivity.class);
-        intent.putExtra("id", id);
-        intent.putExtra("like",like);
-        startActivity(intent);
-        MainActivity.this.finish();
+        if(!isLogin){
+            intentLogin();
+            MainActivity.this.finish();
+        }else{
+            Intent intent = new Intent(MainActivity.this, FilmDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", id);
+            bundle.putString("like",like);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
     }
 
     //chuyen sang trang Dang nhap
-    public void pageLogin(){
+    public void intentLogin(){
         Toast.makeText(this, "Vui lòng đăng nhập !!!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
@@ -172,12 +205,13 @@ public class MainActivity extends AppCompatActivity {
         Call<MovieResponse> call = service.getMovieData();
         call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(@NotNull Call<MovieResponse> call, Response<MovieResponse> response) {
+                assert response.body() != null;
                 movieArrayList.addAll(response.body().getData());
                 movieAdapter.notifyDataSetChanged();
             }
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
             }
         });
@@ -188,7 +222,8 @@ public class MainActivity extends AppCompatActivity {
         Call<MovieResponse> call = service.getMovieDataScroll(page);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(@NotNull Call<MovieResponse> call, Response<MovieResponse> response) {
+                assert response.body() != null;
                 if(movieArrayList.size() == response.body().getPaging().getTotalItem()){
                     Toast.makeText(MainActivity.this, "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
                     isEmptyData = true;
@@ -200,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
             }
         });
@@ -219,11 +254,12 @@ public class MainActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
 
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                assert linearLayoutManager != null;
                 visibleItemCount = linearLayoutManager.getChildCount();
                 totalItemCount = linearLayoutManager.getItemCount();
                 pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
-                if((visibleItemCount + pastVisiblesItems) == totalItemCount && isLoading == false){
+                if((visibleItemCount + pastVisiblesItems) == totalItemCount && !isLoading){
                     if(!isEmptyData){
                         rlloadMore.setVisibility(View.VISIBLE);
                         page += 1;
@@ -250,5 +286,25 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(isLogin){
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.option, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.btnLogout:
+                isLogin = false;
+                intentLogin();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
