@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -26,25 +27,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2.5">
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgImage"
-                android:layout_width="50pt"
-                android:layout_height="80pt"
-                android:layout_weight="1"
-                android:padding="10dp"
-                app:srcCompat="@drawable/btnclose" />
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:scaleType="fitXY"
+                android:paddingTop="5dp"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp">
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtName"
@@ -55,13 +56,27 @@
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtViews"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="TextView"
-                    android:textColor="#fea46f" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_italic"
+                        android:text="Lượt xem: "
+                        android:textColor="#fea46f" />
+
+                    <TextView
+                        android:id="@+id/txtViews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_italic"
+                        android:text="TextView"
+                        android:textColor="#fea46f" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -213,6 +228,7 @@
             android:layout_marginRight="10dp"
             android:backgroundTint="#fea46f"
             android:text="Xem thêm"
+            android:includeFontPadding="false"
             android:textColor="#fea46f"
             android:textStyle="italic"
             android:layout_marginEnd="10dp" />

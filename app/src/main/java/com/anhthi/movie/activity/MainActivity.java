@@ -1,15 +1,5 @@
 package com.anhthi.movie.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,6 +15,16 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.anhthi.movie.R;
 import com.anhthi.movie.adapter.MovieAdapter;
@@ -140,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
         database = new Database(MainActivity.this, "movie.sqlite", null, 1);
 
         // create database
-        database.QueryData("CREATE TABLE IF NOT EXISTS Movie(id_like INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER)");
+        database.QueryData("CREATE TABLE IF NOT EXISTS Movie(id_table INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER)");
+
+        database.QueryData("CREATE TABLE IF NOT EXISTS Views(id_table INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, views INTEGER)");
 
     }
 
@@ -149,13 +151,27 @@ public class MainActivity extends AppCompatActivity {
     public void selectLike(int id, TextView like) {
         Cursor cursor = MainActivity.database.getData("SELECT * FROM Movie");
         while (cursor.moveToNext()){
-            //int id_like = cursor.getInt(0);
+            //int id_table = cursor.getInt(0);
             int id_movie = cursor.getInt(1);
             if(id == id_movie){
                 like.setText("Đã thích");
                 break;
             }else {
                 like.setText("Thích");
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void selectViews(int id, TextView views) {
+        Cursor cursor = MainActivity.database.getData("SELECT * FROM Views");
+        while (cursor.moveToNext()){
+            //int id_table = cursor.getInt(0);
+            int id_sqlite = cursor.getInt(1);
+            int views_sqlite = cursor.getInt(2);
+            if(id == id_sqlite){
+                views.setText(views_sqlite + "");
+                break;
             }
         }
     }
@@ -176,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Get data intent
-    public void getDataFromItemFilm(int id, String like) {
+    public void getDataFromItemFilm(int id, String like, int views) {
         // neu chua dang nhap thi chuyen sang page login
         if(!isLogin){
             intentLogin();
@@ -186,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putInt("id", id);
             bundle.putString("like",like);
+            bundle.putInt("views", views);
             intent.putExtras(bundle);
             startActivity(intent);
             MainActivity.this.finish();

@@ -1,7 +1,5 @@
 package com.anhthi.movie.activity;
 
-import androidx.annotation.RequiresApi;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.anhthi.movie.R;
 import com.anhthi.movie.model.Movie;
@@ -36,7 +36,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
     LinearLayout llLike;
     Movie movie;
     String API_KEY = "AIzaSyBwdvS86j8bvmqLYZ9xDY8Kzjten1lU6qw";
-    int id;
+    int id, views, viewsNew;
     String like;
     String[] titles, link;
 
@@ -91,7 +91,12 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("id");
         like = bundle.getString("like");
+        views = bundle.getInt("views");
         txtLike.setText(like);
+
+        txtViews.setText((views + 1) + "");
+        viewsNew = Integer.parseInt(txtViews.getText().toString());
+        activity.database.QueryData("UPDATE Views SET views = "+ viewsNew +" WHERE id = "+ id +"");
 
         Call<MovieResponse> call = MainActivity.service.getMovieData();
         call.enqueue(new Callback<MovieResponse>() {
@@ -108,7 +113,6 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
                 txtTitle.setText(titles.length == 2 ? titles[0] : movie.getTitle());
                 txtName.setText(titles.length == 2 ? titles[1].trim() : movie.getTitle());
 
-                txtViews.setText("Lượt xem: " + movie.getViews());
                 txtGenres.setText(movie.getCategory());
                 txtActor.setText(movie.getActor());
                 txtDirector.setText(movie.getDirector());
@@ -142,6 +146,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
                 Toast.makeText(FilmDetailActivity.this, "Internet not connected", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void seeMoreEvent(int lineCount) {

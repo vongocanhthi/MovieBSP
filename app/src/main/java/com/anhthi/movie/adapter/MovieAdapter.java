@@ -40,16 +40,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Movie movie = movieArrayList.get(position);
         final int id = movie.getId();
+        final int views = movie.getViews();
+
         String[] title = movie.getTitle().split("/");
         Picasso.get().load(movie.getImage()).into(holder.imgImage);
         holder.txtTitle.setText(title.length == 2 ? title[0] : movie.getTitle());
         holder.txtName.setText(title.length == 2 ? title[1].trim() : movie.getTitle());
-        holder.txtViews.setText("Lượt xem: " + movie.getViews());
+        holder.txtViews.setText(movie.getViews() + "");
         holder.txtDescription.setText(movie.getDescription() + ".");
 
-        //select
+        // insert views sqlite
+        activity.database.QueryData("INSERT INTO Views VALUES(null, "+ id +", "+ views +")");
+        //select like sqlite
         //movie id call == id sqlite => setText like
         activity.selectLike(id, holder.txtLike);
+
+        // select views sqlite
+        activity.selectViews(id, holder.txtViews);
 
         if(holder.txtLike.getText().equals("Thích")){
             holder.imgLike.setImageResource(R.drawable.ic_like);
@@ -80,7 +87,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.btnWatchMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getDataFromItemFilm(id, holder.txtLike.getText().toString());
+                activity.getDataFromItemFilm(id, holder.txtLike.getText().toString(), Integer.parseInt(holder.txtViews.getText().toString()));
             }
         });
 
