@@ -3,6 +3,9 @@ package com.anhthi.movie.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ import com.anhthi.movie.network.RetrofitClientInstance;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -144,42 +149,73 @@ public class MainActivity extends AppCompatActivity {
 
         database.QueryData("CREATE TABLE IF NOT EXISTS Views(id_table INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, views INTEGER)");
 
+        database.QueryData("CREATE TABLE IF NOT EXISTS Profile(id_table INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, avatar BLOB)");
+
+    }
+
+    public static byte[] Image_To_Byte(ImageView img){
+        // chuyển data image sang byte
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) img.getDrawable();
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 
     //select SQLite
     @SuppressLint("SetTextI18n")
-    public void selectLike(int id, TextView like) {
+    public void selectLike(int id, TextView txtLike) {
         Cursor cursor = MainActivity.database.getData("SELECT * FROM Movie");
         while (cursor.moveToNext()){
             //int id_table = cursor.getInt(0);
             int id_movie = cursor.getInt(1);
             if(id == id_movie){
-                like.setText("Đã thích");
+                txtLike.setText("Đã thích");
                 break;
             }else {
-                like.setText("Thích");
+                txtLike.setText("Thích");
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
-    public void selectViews(int id, TextView views) {
+    public void selectViews(int id, TextView txtViews) {
         Cursor cursor = MainActivity.database.getData("SELECT * FROM Views");
         while (cursor.moveToNext()){
             //int id_table = cursor.getInt(0);
             int id_sqlite = cursor.getInt(1);
             int views_sqlite = cursor.getInt(2);
             if(id == id_sqlite){
-                views.setText(views_sqlite + "");
+                txtViews.setText(views_sqlite + "");
                 break;
             }
         }
     }
 
+    public static void selectAvatar(int id, ImageView imgAvatar) {
+        Cursor cursor = MainActivity.database.getData("SELECT * FROM Profile");
+        while (cursor.moveToNext()){
+            //int id_table = cursor.getInt(0);
+            int id_sqlite = cursor.getInt(1);
+            byte[] avatar_sqlite = cursor.getBlob(2);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(avatar_sqlite, 0, avatar_sqlite.length);
+            if(!LoginActivity.isLoginFB){
+                if(id == id_sqlite){
+                    imgAvatar.setImageBitmap(bitmap);
+                    break;
+                }
+            }
+            else{
+                imgAvatar.setImageResource(R.drawable.ic_avatar);
+            }
+        }
+    }
+
     //update SQLite
-//    public void update(){
-//        database.QueryData("UPDATE Movie SET like = '"+ like +"' WHERE id = '"+ id +"'");
-//    }
+    public static void deleteAvatar(int id){
+        database.QueryData("DELETE FROM Profile WHERE id = "+ id +"");
+    }
 
     //insert SQLite
     public void insertLike(int id){
@@ -307,21 +343,56 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(isLogin){
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.option, menu);
-        }
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.option, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.btnRegister:
+                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                MainActivity.this.finish();
+                break;
+            case R.id.btnForgotPassword:
+                startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
+                MainActivity.this.finish();
+                break;
             case R.id.btnLogout:
                 isLogin = false;
                 intentLogin();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem btnLogin = menu.findItem(R.id.btnLogin);
+        MenuItem btnLogout = menu.findItem(R.id.btnLogout);
+
+        if(!isLogin){
+            btnLogin.setVisible(true);
+            btnLogout.setVisible(false);
+        }else {
+            btnLogout.setVisible(true);
+            btnLogin.setTitle("Hồ sơ");
+        }
+
+        btnLogin.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(!isLogin){
+                    intentLogin();
+                }else if(btnLogin.toString().trim().equals("Hồ sơ")){
+                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    MainActivity.this.finish();
+                }
+                return true;
+            }
+        });
+
+        return super.onPrepareOptionsMenu(menu);
     }
 }

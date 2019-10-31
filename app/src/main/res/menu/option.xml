@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/btnRegister"
+        android:title="Đăng ký"/>
+    <item
+        android:id="@+id/btnLogin"
+        android:title="Đăng nhập"/>
+    <item
+        android:id="@+id/btnForgotPassword"
+        android:title="Quên mật khẩu"/>
+    <item
         android:id="@+id/btnLogout"
-        android:title="Đăng xuất">
-    </item>
+        android:title="Đăng xuất"
+        android:visible="false"/>
 </menu>

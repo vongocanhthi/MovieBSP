@@ -109,7 +109,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             imgImage = itemView.findViewById(R.id.imgImage);
             imgLike = itemView.findViewById(R.id.imgLike);
             txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtName = itemView.findViewById(R.id.txtName);
+            txtName = itemView.findViewById(R.id.txtFullName);
             txtViews = itemView.findViewById(R.id.txtViews);
             txtDescription = itemView.findViewById(R.id.txtDescription);
             txtLike = itemView.findViewById(R.id.txtLike);

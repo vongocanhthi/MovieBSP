@@ -1,13 +1,17 @@
 package com.anhthi.movie.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.anhthi.movie.R;
 import com.anhthi.movie.model.UserResponse;
@@ -63,18 +67,39 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     public void Back(View view) {
-        intentLogin();
+        back();
     }
 
-    private void intentLogin() {
-        Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-        startActivity(intent);
-        ForgotPasswordActivity.this.finish();
+    private void back() {
+        if(!MainActivity.isLogin){
+            startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+            ForgotPasswordActivity.this.finish();
+        }else{
+            startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class));
+            ForgotPasswordActivity.this.finish();
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        intentLogin();
+        back();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

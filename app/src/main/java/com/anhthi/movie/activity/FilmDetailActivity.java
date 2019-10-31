@@ -185,7 +185,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
     private void init() {
         ytbTrailer = findViewById(R.id.ytbTrailer);
         txtTitle = findViewById(R.id.txtTitle);
-        txtName = findViewById(R.id.txtName);
+        txtName = findViewById(R.id.txtFullName);
         txtViews = findViewById(R.id.txtViews);
         txtGenres = findViewById(R.id.txtGenres);
         txtActor = findViewById(R.id.txtActor);
@@ -203,8 +203,7 @@ public class FilmDetailActivity extends YouTubeBaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(FilmDetailActivity.this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(FilmDetailActivity.this, MainActivity.class));
         FilmDetailActivity.this.finish();
     }
 }
